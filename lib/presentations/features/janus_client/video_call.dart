@@ -276,8 +276,8 @@ class _VideoCallViewState extends State<VideoCallView> {
       }
     }, onError: (error) async {
       if (error is JanusError) {
-        var dialog;
-        dialog = await showDialog(
+        dynamic dialog;
+        await showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
@@ -451,7 +451,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                                 : WrapAlignment.start,
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 8),
                                 decoration: BoxDecoration(
                                     color: greyLightFour,
@@ -528,6 +528,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                       onPressed: () async {
                         destroy();
                         await publishVideo.hangup();
+                        messages.clear();
                         LOGGEDBOX.clear();
                         // destroy();
                       })),
