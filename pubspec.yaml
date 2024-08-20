@@ -18,6 +18,17 @@ dependencies:
   socket_io_client: ^2.0.3+1
   provider: ^6.1.2
   build_runner: ^2.3.3
+  janus_client: ^2.3.0
+  permission_handler: ^11.0.1
+  awesome_dialog: ^3.2.1
+  rflutter_alert: ^2.0.7
+  curved_progress_bar: ^1.0.2
+  prompt_dialog: ^1.0.13
+  fluttertoast: ^8.2.5
+  responsive_framework: ^1.0.0
+  wakelock_plus: ^1.1.4
+  hive: ^2.2.3
+
 
 dev_dependencies:
   flutter_test:

@@ -1,36 +1,36 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:learn_flutter_webrtc/core/services/signalling_service.dart';
-import 'package:learn_flutter_webrtc/presentations/features/join/view/join_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:learn_flutter_webrtc/core/hive/hive_stuff.dart';
+import 'package:learn_flutter_webrtc/core/routes/route_constants.dart';
+import 'package:learn_flutter_webrtc/presentations/features/dashboard/dashboard_view.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  runApp(const MyApp());
+  await HiveStuff.init();
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
-  // signalling server url
-  final String websocketUrl = "http://192.168.137.1:3000";
-
-  // generate callerID of local user
-  final String selfCallerID =
-      Random().nextInt(999999).toString().padLeft(6, '0');
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // init signalling service
-    SignallingService.instance.init(
-      websocketUrl: websocketUrl,
-      selfCallerID: selfCallerID,
-    );
     return MaterialApp(
-      darkTheme: ThemeData.dark()
-          .copyWith(colorScheme: const ColorScheme.dark(), useMaterial3: true),
+      builder: (context, child) {
+        FToastBuilder();
+        return ResponsiveBreakpoints.builder(child: child!, breakpoints: [
+          const Breakpoint(start: 0, end: 420, name: MOBILE),
+          const Breakpoint(start: 421, end: 820, name: TABLET),
+          const Breakpoint(start: 821, end: 1000, name: DESKTOP),
+        ]);
+      },
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: const ColorScheme.dark(),
+      ),
       themeMode: ThemeMode.dark,
-      home: JoinView(selfCallerId: selfCallerID),
+      navigatorKey: Go.navigatorKey,
+      home: const DashboardView(),
     );
   }
 }
