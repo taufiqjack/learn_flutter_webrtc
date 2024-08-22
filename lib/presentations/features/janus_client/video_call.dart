@@ -17,6 +17,7 @@ import 'package:learn_flutter_webrtc/core/models/message_chat/message_chat.dart'
 import 'package:learn_flutter_webrtc/presentations/features/janus_client/conf.dart';
 import 'package:learn_flutter_webrtc/presentations/widgets/presentation/common_textstyle.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoCallView extends StatefulWidget {
   const VideoCallView({super.key});
@@ -328,6 +329,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                     await publishVideo.acceptCall(answer: answer);
                     Navigator.of(context).pop(incomingDialog);
                     Navigator.of(context).pop(callDialog);
+                    WakelockPlus.enable();
                   },
                   child: const Text('Accept')),
               ElevatedButton(
@@ -443,29 +445,28 @@ class _VideoCallViewState extends State<VideoCallView> {
                     child: ListView(
                         children: List.generate(
                       messages.length,
-                      (index) => Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Wrap(
-                            alignment: messages[index].id == 1
-                                ? WrapAlignment.end
-                                : WrapAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 8),
-                                decoration: BoxDecoration(
-                                    color: greyLightFour,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: CommonText(
+                      (index) => Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Wrap(
+                              alignment: messages[index].id == 1
+                                  ? WrapAlignment.end
+                                  : WrapAlignment.start,
+                              children: [
+                                CommonText(
                                   text: messages[index].id == 1
-                                      ? LOGGEDBOX.get(CLIENT) + ' : '
-                                      : LOGGEDBOX.get(NAME) + ' : ',
+                                      ? '${LOGGEDBOX.get(CLIENT)} : '
+                                      : '${LOGGEDBOX.get(NAME)} : ',
                                   color: white,
                                 ),
-                              ),
-                              Text(messages[index].chat!),
-                            ]),
-                      ),
+                                CommonText(
+                                  text: messages[index].chat!,
+                                  color: white,
+                                ),
+                              ])).bottomPadded6(),
                     ))),
                 Flexible(
                     child: Row(
@@ -504,9 +505,9 @@ class _VideoCallViewState extends State<VideoCallView> {
                       color: ringing
                           ? Colors.green
                           : Colors.grey.withOpacity(0.3)),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "Ringing...",
                         style: TextStyle(color: Colors.white),

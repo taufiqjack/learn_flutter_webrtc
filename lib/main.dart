@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // init signalling service
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         FToastBuilder();
         return ResponsiveBreakpoints.builder(child: child!, breakpoints: [
