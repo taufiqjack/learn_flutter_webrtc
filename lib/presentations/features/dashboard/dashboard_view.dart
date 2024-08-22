@@ -3,6 +3,7 @@ import 'package:learn_flutter_webrtc/core/constants/color_constant.dart';
 import 'package:learn_flutter_webrtc/core/constants/container.dart';
 import 'package:learn_flutter_webrtc/core/routes/route_constants.dart';
 import 'package:learn_flutter_webrtc/presentations/features/janus_client/video_call.dart';
+import 'package:learn_flutter_webrtc/presentations/features/schedule/view/schedule_view.dart';
 import 'package:learn_flutter_webrtc/presentations/widgets/presentation/common_input_button.dart';
 import 'package:learn_flutter_webrtc/presentations/widgets/presentation/common_textstyle.dart';
 
@@ -37,6 +38,16 @@ class _DashboardViewState extends State<DashboardView> {
                   onTap: () => Go.to(
                     const VideoCallView(),
                   ),
+                ),
+              ),
+            ).bottomPadded6(),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+              child: Center(
+                child: CommonInputButton(
+                  buttonText: 'Calender Activities',
+                  onTap: () => Go.to(const ScheduleView()),
                 ),
               ),
             )

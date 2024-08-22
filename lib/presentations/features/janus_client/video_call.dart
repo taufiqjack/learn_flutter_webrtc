@@ -91,11 +91,15 @@ class _VideoCallViewState extends State<VideoCallView> {
       //Ask for runtime permissions if necessary.
       var status = await Permission.bluetooth.request();
       if (status.isPermanentlyDenied) {
-        print('BLEpermdisabled');
+        if (kDebugMode) {
+          print('BLEpermdisabled');
+        }
       }
       status = await Permission.bluetoothConnect.request();
       if (status.isPermanentlyDenied) {
-        print('ConnectPermdisabled');
+        if (kDebugMode) {
+          print('ConnectPermdisabled');
+        }
       }
     }
     final devices = await navigator.mediaDevices.enumerateDevices();
@@ -120,6 +124,7 @@ class _VideoCallViewState extends State<VideoCallView> {
       videoRecv: true,
     );
     await publishVideo.call(nameController.text, offer: offer);
+    LOGGEDBOX.put(NAME, nameController.text);
     nameController.text = "";
   }
 
@@ -222,7 +227,9 @@ class _VideoCallViewState extends State<VideoCallView> {
         (connectionState) async {
       if (connectionState ==
           RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
-        print('connection established');
+        if (kDebugMode) {
+          print('connection established');
+        }
       }
     };
     publishVideo.remoteTrack?.listen((event) async {
@@ -240,7 +247,9 @@ class _VideoCallViewState extends State<VideoCallView> {
       Object data = even.event.plugindata?.data;
       if (data is VideoCallRegisteredEvent) {
         Navigator.of(context).pop(registerDialog);
-        print(data.result?.username);
+        if (kDebugMode) {
+          print(data.result?.username);
+        }
         nameController.clear();
         await makeCallDialog();
       }
@@ -349,7 +358,7 @@ class _VideoCallViewState extends State<VideoCallView> {
       appBar: AppBar(automaticallyImplyLeading: false, actions: [
         PopupMenuButton<String>(
           onSelected: _selectAudioInput,
-          icon: const Icon(Icons.input),
+          icon: const Icon(Icons.mic),
           itemBuilder: (BuildContext context) {
             if (_mediaDevicesList != null) {
               return _mediaDevicesList!
@@ -443,29 +452,32 @@ class _VideoCallViewState extends State<VideoCallView> {
                     child: ListView(
                         children: List.generate(
                       messages.length,
-                      (index) => Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Wrap(
-                            alignment: messages[index].id == 1
-                                ? WrapAlignment.end
-                                : WrapAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 8),
-                                decoration: BoxDecoration(
-                                    color: greyLightFour,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: CommonText(
+                      (index) => Container(
+                          padding: const EdgeInsets.only(
+                              right: 8, left: 8, bottom: 8, top: 8),
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                              color: messages[index].id != 1
+                                  ? green.withOpacity(0.3)
+                                  : blue.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: messages[index].id != 1
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                              children: [
+                                CommonText(
                                   text: messages[index].id == 1
-                                      ? LOGGEDBOX.get(CLIENT) + ' : '
-                                      : LOGGEDBOX.get(NAME) + ' : ',
+                                      ? '${LOGGEDBOX.get(CLIENT)} : '
+                                      : '${LOGGEDBOX.get(NAME)} : ',
                                   color: white,
                                 ),
-                              ),
-                              Text(messages[index].chat!),
-                            ]),
-                      ),
+                                CommonText(
+                                  text: messages[index].chat!,
+                                  color: white,
+                                ),
+                              ])).paddedLTRB(left: 10, right: 10, bottom: 2),
                     ))),
                 Flexible(
                     child: Row(
