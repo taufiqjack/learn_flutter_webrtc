@@ -22,6 +22,9 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
+// START: FlutterFire Configuration
+apply plugin: 'com.google.gms.google-services'
+// END: FlutterFire Configuration
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -58,6 +61,13 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+             android.applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                  def date = new Date()
+                    outputFileName = "flutter_webrtc_${date.format('yyyy-MM-dd')}_v${versionName}-${output.getFilter(com.android.build.OutputFile.ABI)}.apk"
+
+                }
+            }
         }
     }
 }

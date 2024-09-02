@@ -15,6 +15,7 @@ class ScheduleController extends State<ScheduleView> {
     meetings.addAll([
       Meeting('HUT RI 79', startHut, endHut, red, false),
       Meeting('Meeting with Client', startTime, endTime, greeTwo, false),
+      // Meeting('Yeay Salary', startTime, endTime, orange, false),
     ]);
     return meetings;
   }

@@ -1,11 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learn_flutter_webrtc/core/hive/hive_stuff.dart';
 import 'package:learn_flutter_webrtc/core/routes/route_constants.dart';
+import 'package:learn_flutter_webrtc/firebase_options.dart';
 import 'package:learn_flutter_webrtc/presentations/features/dashboard/dashboard_view.dart';
+
 import 'package:responsive_framework/responsive_framework.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
   await HiveStuff.init();
 }

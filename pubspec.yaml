@@ -30,6 +30,10 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.1.1
   syncfusion_flutter_calendar: ^20.3.60
+  syncfusion_flutter_xlsio: ^20.4.54-beta
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.14.0
+  cloud_firestore_web: ^3.9.0
 
 
 dev_dependencies:
